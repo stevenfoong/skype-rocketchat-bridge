@@ -4,4 +4,14 @@ export SKYPE_USERNAME="[skype username]"
 export SKYPE_PASSWORD="[skype password]"
 clear
 
-./skype_list_recent.chat.py
+case $1 in
+
+  list-recent-chat)
+    ./skype_list_recent.chat.py
+    ;;
+  
+  *)
+    echo -n "unknown parameter"
+    ;;
+    
+esac
