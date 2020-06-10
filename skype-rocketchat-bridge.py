@@ -19,6 +19,11 @@ if not rocketchat_url:
     print("ROCKETCHAT_URL")
     sys.exit(1)
 
+skype_bot_id =  os.environ.get("SKYPE_BOT_ID")
+if not skype_bot_id:
+    print("missing config SKYPE_BOT_ID")
+    sys.exit(1)
+    
 # for debug purpose
 # print(f"username: {app_username}")
 # print(f"password: {app_password}")
