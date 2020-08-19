@@ -18,7 +18,11 @@ case $1 in
     ;;
   
   rocketchat-bridge)
-    ./skype-rocketchat-bridge.py
+    ./rocketchat-bridge.py
+    ;;
+
+  skype-bridge)
+    ./skype-bridge.py
     ;;
 
   retrieve-skype-bot-id)
