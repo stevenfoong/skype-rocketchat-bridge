@@ -77,6 +77,9 @@ def process_msg(msg):
     msg = re.sub('<(/)?ss( type="\w+")?>', '', msg)
     msg = msg.replace("</ss>","")
 
+    msg = re.sub('<a[^>]+href=\"(.*?)\"[^>]*>', '', msg)
+    msg = msg.replace("</a>","")
+    
     return msg
 
 def process_quote_msg(msg,msg_id,msg_channel):
