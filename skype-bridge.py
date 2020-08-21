@@ -4,6 +4,7 @@ import os
 import sys
 import requests
 import datetime
+import base64
 
 import flask
 from flask import request, jsonify
@@ -20,13 +21,18 @@ if not skype_bot_app_secret:
     print("missing config SKYPE_BOT_SECRET")
     sys.exit(1)
 
+rocketchat_domain = os.environ.get("ROCKETCHAT_DOMAIN")
+if not rocketchat_domain:
+    print("missing config ROCKETCHAT_DOMAIN")
+    sys.exit(1)
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 def s_channel_id(channel_name):
     switcher={
-           'channel name 1':'Channel ID 1',
-           'channel name 2':'Channel ID 1'
+           'channel-1':'ID1',
+           'channel-2':'ID2'
     }
     return switcher.get(channel_name,"Unknown")
 
@@ -49,13 +55,43 @@ def msg_incoming():
         resData = response.json()
         if "message" in data:
             if "_id" in data["message"]["file"]:
-                print ("attachment found")
+                fileURL = "https://" + rocketchat_domain + "/file-upload/" + data["message"]["file"]["_id"] + "/" + data["message"]["file"]["name"]
+                attachment = requests.get(fileURL, allow_redirects=True)
+                filename = data["message"]["file"]["name"]
+                responseURL = "https://smba.trafficmanager.net/apis/v3/conversations/" + s_channel_id(data["channel_name"]) + "/activities/"
+                MessageSent = requests.post(
+                    responseURL,
+                    json={
+                        "textFormat": "plain",
+                        "type": "message",
+                        "timestamp": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%zZ"),
+                        "channelId": "skype",
+                        "conversation": {
+                            "id": s_channel_id(data["channel_name"])
+                        },
+                        "from": {
+                            "id": skype_bot_id,
+                            "name": "mjcs"
+                        },
+                        "attachments": [
+                            {
+                                "contentType": data["message"]["file"]["type"],
+                                "contentUrl": "data:" + data["message"]["file"]["type"] + ";base64," + (base64.b64encode(attachment.content).decode("utf-8")),
+                                "name": data["message"]["file"]["name"]
+                            }
+                        ],
+                    },
+                    headers={
+                        "Authorization":"%s %s" % (resData["token_type"],resData["access_token"])
+                    }
+                )
+            print (MessageSent.status_code)
+
         if data["text"] != "":
             responseURL = "https://smba.trafficmanager.net/apis/v3/conversations/" + s_channel_id(data["channel_name"]) + "/activities/"
             MessageSent = requests.post(
                 responseURL,
                 json={
-                    "text": "test message",
                     "textFormat": "plain",
                     "type": "message",
                     "timestamp": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%zZ"),
@@ -74,6 +110,7 @@ def msg_incoming():
                 }
             )
             print (MessageSent.status_code)
+
 
     return "Completed"
 
