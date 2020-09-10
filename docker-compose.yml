@@ -1,7 +1,7 @@
 version: '3'
 services:
   skype-rocketchat-bridge:
-    image: foongws/skype-rocketchat-bridge
+    image: stevenfoong/skype-rocketchat-bridge
     container_name: skype-rocketchat-bridge
     restart: always
     ports:
@@ -10,7 +10,9 @@ services:
      - SKYPE_USERNAME="[skype username]"
      - SKYPE_PASSWORD="[skype password]"
      - SKYPE_BOT_ID="[skype bot ID]"
+     - SKYPE_BOT_SECRET="[skype bot secret token]"
      - ROCKETCHAT_URL="[rocket chat webhook url]"
      - ROCKETCHAT_API="[rocket chat api url]"
+     - ROCKETCHAT_DOMAIN="rocket chat domain"
      - ROCKETCHAT_X_Auth_Token="[rocket chat bot token]"
      - ROCKETCHAT_X_User_Id="[rocket chat bot id]"
