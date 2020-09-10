@@ -11,6 +11,9 @@ EXPOSE 5000
 
 RUN mkdir -p /opt/skype-rocketchat-bridge \
   && cd /opt/skype-rocketchat-bridge \
+  && touch /opt/skype-rocketchat-bridge/.tokens \
+  && chmod g+rw /opt/skype-rocketchat-bridge/.tokens \
+  && chmod o+rw /opt/skype-rocketchat-bridge/.tokens \
   && wget -O python-requirements.txt https://raw.githubusercontent.com/stevenfoong/skype-rocketchat-bridge/master/docker-image/python-requirements.txt \
   && wget -O skype-bridge.py https://raw.githubusercontent.com/stevenfoong/skype-rocketchat-bridge/master/skype-bridge.py \
   && wget -O rocketchat-bridge.py https://raw.githubusercontent.com/stevenfoong/skype-rocketchat-bridge/master/rocketchat-bridge.py \
