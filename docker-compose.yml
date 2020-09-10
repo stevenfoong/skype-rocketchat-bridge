@@ -1,0 +1,16 @@
+version: '3'
+services:
+  skype-rocketchat-bridge:
+    image: foongws/skype-rocketchat-bridge
+    container_name: skype-rocketchat-bridge
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+     - SKYPE_USERNAME="[skype username]"
+     - SKYPE_PASSWORD="[skype password]"
+     - SKYPE_BOT_ID="[skype bot ID]"
+     - ROCKETCHAT_URL="[rocket chat webhook url]"
+     - ROCKETCHAT_API="[rocket chat api url]"
+     - ROCKETCHAT_X_Auth_Token="[rocket chat bot token]"
+     - ROCKETCHAT_X_User_Id="[rocket chat bot id]"
