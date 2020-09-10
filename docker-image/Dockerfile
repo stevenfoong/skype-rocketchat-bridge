@@ -24,4 +24,4 @@ RUN mkdir -p /opt/skype-rocketchat-bridge \
   && wget -O supervisor-service-script.conf https://raw.githubusercontent.com/foongws/skype-rocketchat-bridge/master/docker-image/supervisor-service-script.conf
 
 # Initializing python script from supervisord
-CMD ["/usr/bin/supervisord","-c","/opt/supervisor/supervisor-service-script.conf"]
+CMD /usr/bin/supervisord -c /opt/supervisor/supervisor-service-script.conf
