@@ -6,8 +6,8 @@ ENV PATH /usr/local/bin:$PATH
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
 ENV LANG C.UTF-8
-
-RUN yum -y install python3-3.6.8 supervisor wget git epel-release
+RUN yum -y install epel-release
+RUN yum -y install python3-3.6.8 supervisor wget git
 
 # Exposing container port for binding with host
 EXPOSE 5000
