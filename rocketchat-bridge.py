@@ -56,7 +56,7 @@ if not rocketchat_x_user_id:
     print("missing config ROCKETCHAT_X_User_Id")
     sys.exit(1)
 
-sk=Skype(app_username, app_password,".tokens")
+sk=Skype(app_username, app_password,"/opt/skype-rocketchat-bridge/.tokens")
 sk.chats
 
 print("Skype to Rocket Chat Bridge Started")
@@ -208,5 +208,5 @@ class MySkype(SkypeEventLoop):
 
             logF.close()
 
-sk = MySkype(tokenFile=".tokens", autoAck=True)
+sk = MySkype(tokenFile="/opt/skype-rocketchat-bridge/.tokens", autoAck=True)
 sk.loop()
