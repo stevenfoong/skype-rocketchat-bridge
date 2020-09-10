@@ -2,3 +2,5 @@ beautifulsoup4 == 4.9.1
 requests == 2.23.0
 pytz == 2020.1
 markdown-strings == 3.3.0
+flask == 1.1.2
+python-magic == 0.4.18
