@@ -59,6 +59,8 @@ if not rocketchat_x_user_id:
 sk=Skype(app_username, app_password,".tokens")
 sk.chats
 
+print("Skype to Rocket Chat Bridge Started")
+
 def process_msg(msg):
 
     msg = msg.replace("<b raw_pre=\"*\" raw_post=\"*\">","*")
@@ -79,17 +81,15 @@ def process_msg(msg):
 
     msg = re.sub('<a[^>]+href=\"(.*?)\"[^>]*>', '', msg)
     msg = msg.replace("</a>","")
-    
+
     return msg
 
 def process_quote_msg(msg,msg_id,msg_channel):
     soup = BeautifulSoup(msg, 'html.parser')
-    msg_array = msg.split()
     q_msg = (soup.find('legacyquote').next_sibling)
     for msgs in sk.chats[msg_channel].getMsgs():
         if msgs.id == msg_id:
             q_msg = process_msg(msgs.content)
-
     return q_msg
 
 
@@ -117,7 +117,8 @@ class MySkype(SkypeEventLoop):
 
             if hasattr(sk.contacts.user(event.msg.userId),'avatar'):
                 sender_avatar = sk.contacts.user(event.msg.userId).avatar
-                logF.write(log_prefix + ": Sender avatar found : " + sender_avatar + '\n')
+                if sender_avatar is not None:
+                    logF.write(log_prefix + ": Sender avatar found : " + sender_avatar + '\n')
             else:
                 sender_avatar = "https://vignette.wikia.nocookie.net/logopedia/images/f/fb/Skype_Logo_2019.svg/revision/latest/scale-to-width-down/340?cb=20191207211056"
 
@@ -126,7 +127,7 @@ class MySkype(SkypeEventLoop):
                 logF.write(log_prefix + ": Chat Topic found : " + chattopic + '\n')
             else:
                 chattopic="skype-bot-private-message"
-            
+
             message_content = event.msg.content
             logF.write(log_prefix + ": Message Content : " + message_content + '\n')
             processed_message = process_msg(message_content)
@@ -144,10 +145,9 @@ class MySkype(SkypeEventLoop):
                 }
             }
 
-            if event.msg.type =="RichText/UriObject" or event.msg.type =="RichText/Media_GenericFile":
-
+            if (event.msg.type =="RichText/UriObject" or event.msg.type =="RichText/Media_GenericFile") and event.msg.userId != skype_bot_id:
                 logF.write(log_prefix + ": Message File Name : " + event.msg.file.name + '\n')
-                
+
                 file_attach = open(event.msg.file.name,"wb")
                 file_attach.write(event.msg.fileContent)
                 file_attach.close()
@@ -157,7 +157,7 @@ class MySkype(SkypeEventLoop):
                 X_User_Id="'X-User-Id': '" + rocketchat_x_user_id + "'"
 
                 contentType="Content-Type:text/plain"
-                
+
                 headers = {'X-Auth-Token' : rocketchat_x_auth_token , 'X-User-Id' : rocketchat_x_user_id }
                 room_info = requests.get(api_url, headers = headers)
 
@@ -166,7 +166,7 @@ class MySkype(SkypeEventLoop):
                 room_id = room['_id']
 
                 api_url = 'https://chat.majasolutions.net/api/v1/rooms.upload/'+room_id
-                files = { 'file': (event.msg.file.name, open(event.msg.file.name, 'rb'),magic.from_file(event.msg.file.name, mime=True)),}    
+                files = { 'file': (event.msg.file.name, open(event.msg.file.name, 'rb'),magic.from_file(event.msg.file.name, mime=True)),}
                 bot_msg = {'msg' : 'File ' + magic.from_file(event.msg.file.name) + ' sent by ' + sender_name}
                 upload_file = requests.post(api_url, data = bot_msg, headers = headers, files = files)
                 logF.write(log_prefix + ": Upload File Status : " + str(upload_file.status_code) + '\n')
@@ -203,8 +203,9 @@ class MySkype(SkypeEventLoop):
                 if event.msg.userId != skype_bot_id:
                     send_message = requests.post(rocketchat_url,data=json_dump)
                     logF.write(log_prefix + ": Send Message Status : " + str(send_message.status_code) + '\n')
-                    
+
             logF.write("\n")
+
             logF.close()
 
 sk = MySkype(tokenFile=".tokens", autoAck=True)
