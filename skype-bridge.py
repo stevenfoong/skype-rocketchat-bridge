@@ -8,6 +8,7 @@ import base64
 
 import flask
 from flask import request, jsonify
+from channel import channel_id
 
 import json
 
@@ -30,11 +31,7 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 def s_channel_id(channel_name):
-    switcher={
-           'channel-1':'ID1',
-           'channel-2':'ID2'
-    }
-    return switcher.get(channel_name,"Unknown")
+    return channel_id.get(channel_name,"Unknown")
 
 @app.route('/', methods=['GET'])
 def home():
