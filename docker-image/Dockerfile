@@ -18,7 +18,7 @@ RUN mkdir -p /opt/skype-rocketchat-bridge \
   && wget -O skype-bridge.py https://raw.githubusercontent.com/stevenfoong/skype-rocketchat-bridge/master/skype-bridge.py \
   && wget -O rocketchat-bridge.py https://raw.githubusercontent.com/stevenfoong/skype-rocketchat-bridge/master/rocketchat-bridge.py \
   && pip3 install -r python-requirements.txt \
-  && pip3 install -e "git+https://github.com/Terrance/SkPy@live-login-fix#egg=skpy" \
+  && pip3 install -e "git+https://github.com/Terrance/SkPy@soap-login#egg=skpy" \
   && wget -O /etc/supervisord.conf https://raw.githubusercontent.com/foongws/skype-rocketchat-bridge/master/docker-image/supervisor-service-script.conf
 
 CMD ["/usr/bin/supervisord"]
