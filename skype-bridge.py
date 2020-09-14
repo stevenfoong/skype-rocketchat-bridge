@@ -8,7 +8,8 @@ import base64
 
 import flask
 from flask import request, jsonify
-from channel import channel_id
+import data.channel
+from data.channel import channel_id
 
 import json
 
