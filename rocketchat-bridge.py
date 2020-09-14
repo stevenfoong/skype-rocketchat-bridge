@@ -175,6 +175,48 @@ class MySkype(SkypeEventLoop):
                 logF.write(log_prefix + ": Upload File Status : " + str(upload_file.status_code) + '\n')
                 if os.path.exists(event.msg.file.name):
                     os.remove(event.msg.file.name)
+                    
+            elif (event.msg.type =="RichText/Media_AudioMsg") and event.msg.userId != skype_bot_id:
+                audio_msg = BeautifulSoup(event.msg.content, 'html.parser')
+                if len(audio_msg.find_all('uriobject')) > 0:
+                    attributes_dictionary = audio_msg.find('uriobject').attrs
+                    #print(attributes_dictionary)
+                    audio_file_url = attributes_dictionary['url_thumbnail']
+
+                download_conn = SkypeConnection()
+                download_conn.liveLogin(app_username,app_password)
+                resp = download_conn("GET", audio_file_url, auth=SkypeConnection.Auth.Authorize)
+
+                if len(audio_msg.find_all('originalname')) > 0:
+                    attributes_dictionary = audio_msg.find('originalname').attrs
+                    audio_file_name = attributes_dictionary['v']
+                    open(audio_file_name,'wb').write(resp.content)
+                    
+                    logF.write(log_prefix + ": Message File Name : " + audio_file_name + '\n')
+
+                    api_url = rocketchat_api+"rooms.info?roomName="+chattopic
+                    X_Auth_Token="'X-Auth-Token': '" + rocketchat_x_auth_token + "'"
+                    X_User_Id="'X-User-Id': '" + rocketchat_x_user_id + "'"
+
+                    contentType="Content-Type:text/plain"
+                
+                    headers = {'X-Auth-Token' : rocketchat_x_auth_token , 'X-User-Id' : rocketchat_x_user_id }
+                    room_info = requests.get(api_url, headers = headers)
+
+                    parsed_json = (json.loads(room_info.text))
+                    room = parsed_json['room']
+                    room_id = room['_id']
+
+                    api_url = 'https://chat.majasolutions.net/api/v1/rooms.upload/'+room_id
+                    files = { 'file': (audio_file_name, open(audio_file_name, 'rb'),magic.from_file(audio_file_name, mime=True)),}    
+                    bot_msg = {'msg' : 'File ' + magic.from_file(audio_file_name) + ' sent by ' + sender_name + '\n' +
+                                'If the audio file is not complete, please hear it at the skype web or skype client.'
+                              }
+                    upload_file = requests.post(api_url, data = bot_msg, headers = headers, files = files)
+                    logF.write(log_prefix + ": Upload File Status : " + str(upload_file.status_code) + '\n')
+                    
+                    if os.path.exists(audio_file_name):
+                        os.remove(audio_file_name)
 
             else:
                 SoupText = BeautifulSoup(processed_message, 'html.parser')
