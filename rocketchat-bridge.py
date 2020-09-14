@@ -101,9 +101,9 @@ class MySkype(SkypeEventLoop):
         if isinstance(event,(SkypeNewMessageEvent, SkypeEditMessageEvent)):
 
             if os.path.exists('skype-bot.log'):
-                logF = open("skype-bot.log", "a")
+                logF = open("skype-bot.log", "a", encoding="utf-8")
             else:
-                logF = open("skype-bot.log", "w")
+                logF = open("skype-bot.log", "w", encoding="utf-8")
 
             log_prefix = event.msg.id
 
