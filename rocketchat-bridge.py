@@ -79,6 +79,9 @@ def process_msg(msg):
     msg = re.sub('<(/)?ss( type="\w+")?>', '', msg)
     msg = msg.replace("</ss>","")
 
+    msg = re.sub('<at [^>]*>', '*@', msg)
+    msg = msg.replace("</at>","*")
+    
     msg = re.sub('<a[^>]+href=\"(.*?)\"[^>]*>', '', msg)
     msg = msg.replace("</a>","")
 
