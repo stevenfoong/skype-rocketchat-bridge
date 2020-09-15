@@ -150,7 +150,8 @@ class MySkype(SkypeEventLoop):
                 }
             }
 
-            print(event.msg)
+            event_msg = event.msg
+            print(event_msg.encode('ascii', errors='namereplace').decode('ascii'))
             
             if (event.msg.type =="RichText/UriObject" or event.msg.type =="RichText/Media_GenericFile") and event.msg.userId != skype_bot_id:
                 logF.write(log_prefix + ": Message File Name : " + event.msg.file.name + '\n')
