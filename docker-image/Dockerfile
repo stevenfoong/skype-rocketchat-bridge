@@ -2,7 +2,7 @@ FROM centos:7.8.2003
 
 # http://bugs.python.org/issue19846
 # > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
-ENV LANG C.UTF-8
+ENV LANG en_US.utf8
 RUN yum -y install epel-release
 RUN yum -y install python3-3.6.8 supervisor wget git
 
