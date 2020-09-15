@@ -8,13 +8,13 @@ A bridge between skype and rocketchat writing in python. Bridge from Skype to Ro
 Configure through these environment variables:
 * `SKYPE_USERNAME` : The user name to authenticate with skype.
 * `SKYPE_PASSWORD` : The password to authenticate with skype.
-* `SKYPE_BOT_ID` : The skype bot id in azure. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this skype bot id.
-* `SKYPE_BOT_SECRET` : The skype bot secret in azure. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to generate skype bot id.
-* `ROCKETCHAT_URL` : The webhook URL that use to send message from skype to rocketchat. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this webhook URL.
-* `ROCKETCHAT_API` : The API URL that use to upload attachment. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this webhook URL.
+* `SKYPE_BOT_ID` : The skype bot id in azure. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this skype bot id.
+* `SKYPE_BOT_SECRET` : The skype bot secret in azure. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to generate skype bot id.
+* `ROCKETCHAT_URL` : The webhook URL that use to send message from skype to rocketchat. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this webhook URL.
+* `ROCKETCHAT_API` : The API URL that use to upload attachment. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to find this webhook URL.
 * `ROCKETCHAT_DOMAIN` : Rocket chat domain name.
-* `ROCKETCHAT_X_Auth_Token` : Token of bot account in Rocketchat. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to create the token.
-* `ROCKETCHAT_X_User_Id` : Bot account in Rocketchat. Refer to [Bridge between Skype and Rocketchat container](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to create the bot account.
+* `ROCKETCHAT_X_Auth_Token` : Token of bot account in Rocketchat. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to create the token.
+* `ROCKETCHAT_X_User_Id` : Bot account in Rocketchat. Refer to [wiki](https://github.com/stevenfoong/skype-rocketchat-bridge/wiki) on how to create the bot account.
 
 ## Running this image with docker-compose
 
