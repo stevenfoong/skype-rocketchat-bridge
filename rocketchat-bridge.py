@@ -187,8 +187,9 @@ class MySkype(SkypeEventLoop):
                     audio_file_url = attributes_dictionary['url_thumbnail']
 
                 download_conn = SkypeConnection()
-                download_conn.liveLogin(app_username,app_password)
-                resp = download_conn("GET", audio_file_url, auth=SkypeConnection.Auth.Authorize)
+                download_conn.setTokenFile("download_conn_token")
+                download_conn.soapLogin(app_username,app_password)
+                resp = download_conn("GET", audio_file_url, auth=SkypeConnection.Auth.SkypeToken)
 
                 if len(audio_msg.find_all('originalname')) > 0:
                     attributes_dictionary = audio_msg.find('originalname').attrs
