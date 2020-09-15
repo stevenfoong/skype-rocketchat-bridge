@@ -108,10 +108,13 @@ class MySkype(SkypeEventLoop):
                 logF = open("skype-bot.log", "w", encoding="utf-8")
 
             log_prefix = event.msg.id
-
-            logF.write(log_prefix + ": Start processing message." + '\n')
-            logF.write(log_prefix + ": Message ID : " + event.msg.id + '\n')
-            logF.write(log_prefix + ": Message type : " + event.msg.type + '\n')
+            
+            try:
+                logF.write(log_prefix + ": Start processing message." + '\n')
+                logF.write(log_prefix + ": Message ID : " + event.msg.id + '\n')
+                logF.write(log_prefix + ": Message type : " + event.msg.type + '\n')
+            except:
+                pass
 
             if hasattr(sk.contacts.user(event.msg.userId),'name'):
                 sender_name = str(getattr(sk.contacts.user(event.msg.userId), 'name'))
@@ -149,9 +152,11 @@ class MySkype(SkypeEventLoop):
                     "id":event.msg.chatId
                 }
             }
-
-            event_msg = event.msg
-            print(event_msg.encode('ascii', errors='namereplace').decode('ascii'))
+            
+            try:
+                print(event.msg)
+            except:
+                pass
             
             if (event.msg.type =="RichText/UriObject" or event.msg.type =="RichText/Media_GenericFile") and event.msg.userId != skype_bot_id:
                 logF.write(log_prefix + ": Message File Name : " + event.msg.file.name + '\n')
