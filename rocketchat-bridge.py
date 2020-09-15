@@ -16,6 +16,8 @@ from skpy import SkypeNewMessageEvent
 from skpy import SkypeEditMessageEvent
 from skpy import SkypeContacts
 from skpy import SkypeContactGroup
+from skpy import SkypeMessageEvent
+from skpy import SkypeConnection
 
 from bs4 import BeautifulSoup
 
@@ -98,7 +100,7 @@ def process_quote_msg(msg,msg_id,msg_channel):
 
 class MySkype(SkypeEventLoop):
     def onEvent(self, event):
-        if isinstance(event,(SkypeNewMessageEvent, SkypeEditMessageEvent)):
+        if isinstance(event,(SkypeNewMessageEvent, SkypeEditMessageEvent, SkypeMessageEvent)):
 
             if os.path.exists('skype-bot.log'):
                 logF = open("skype-bot.log", "a", encoding="utf-8")
@@ -182,7 +184,6 @@ class MySkype(SkypeEventLoop):
                 audio_msg = BeautifulSoup(event.msg.content, 'html.parser')
                 if len(audio_msg.find_all('uriobject')) > 0:
                     attributes_dictionary = audio_msg.find('uriobject').attrs
-                    #print(attributes_dictionary)
                     audio_file_url = attributes_dictionary['url_thumbnail']
 
                 download_conn = SkypeConnection()
