@@ -42,3 +42,7 @@ services:
     volumes:
      - /data/skype-rocketchat-bridge:/opt/skype-rocketchat-bridge/data
 ```
+
+## Need Help ?
+
+If you have any question or facing any issue setup the container, raise an [issue](https://github.com/stevenfoong/skype-rocketchat-bridge/issues), i will try my best to answer your question or help you out.
